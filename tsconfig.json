@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "node",
+    "types": [
+      "@league-of-foundry-developers/foundry-vtt-types"
+    ],
+    "strict": true,
+    "baseUrl": ".",
+    "outDir": "scripts",
+    "rootDir": "src",
+    "sourceMap": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "src"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "luck-ability",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@league-of-foundry-developers/foundry-vtt-types": "^13.346.0-beta.20250812191140",
+    "typescript": "^5.9.3"
+  }
+}

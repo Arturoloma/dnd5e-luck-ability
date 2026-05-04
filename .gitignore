@@ -1,0 +1,9 @@
+# Dependencies
+node_modules/
+
+# TypeScript compiled output (built by CI for releases)
+scripts/
+
+# OS files
+.DS_Store
+Thumbs.db

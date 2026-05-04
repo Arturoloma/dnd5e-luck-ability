@@ -1,0 +1,9 @@
+/* CSS for Luck Ability score module */
+.dnd5e2 .saves li[data-ability='lck'] {
+  display: var(--luck-saves-visible, none);
+}
+
+.luck-heading {
+  border-bottom: none;
+  padding-bottom: 0;
+}

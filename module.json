@@ -1,0 +1,34 @@
+{
+  "id": "luck-ability",
+  "title": "D&D5e Luck Ability",
+  "description": "Adds Luck as an Ability Score.",
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "13.0",
+    "verified": "13.348",
+    "maximum": "13.999"
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "dnd5e",
+        "type": "system",
+        "manifest": "https://github.com/foundryvtt/dnd5e/releases/latest/download/system.json",
+        "compatibility": {
+          "minimum": "5.1.0",
+          "verified": "5.1.10"
+        }
+      }
+    ]
+  },
+  "esmodules": [
+    "scripts/luck-ability.js"
+  ],
+  "styles": [
+    "styles/luck-ability.css"
+  ],
+  "author": "Arturoloma",
+  "url": "",
+  "manifest": "",
+  "download": ""
+}

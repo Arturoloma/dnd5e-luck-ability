@@ -1,0 +1,58 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Set release variables
+        id: vars
+        run: |
+          TAG=${{ github.ref_name }}
+          VERSION=${TAG#v}
+          OWNER=${{ github.repository_owner }}
+          REPO=${{ github.event.repository.name }}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "manifest=https://github.com/$OWNER/$REPO/releases/latest/download/module.json" >> $GITHUB_OUTPUT
+          echo "download=https://github.com/$OWNER/$REPO/releases/download/$TAG/luck-ability.zip" >> $GITHUB_OUTPUT
+
+      - name: Update module.json
+        run: |
+          jq \
+            --arg version "${{ steps.vars.outputs.version }}" \
+            --arg manifest "${{ steps.vars.outputs.manifest }}" \
+            --arg download "${{ steps.vars.outputs.download }}" \
+            '.version = $version | .manifest = $manifest | .download = $download' \
+            module.json > module.tmp.json
+          mv module.tmp.json module.json
+
+      - name: Package release
+        run: zip -r luck-ability.zip module.json scripts/ styles/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            luck-ability.zip
+            module.json
