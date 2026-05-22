@@ -2,7 +2,13 @@
   "permissions": {
     "allow": [
       "Bash(npx tsc *)",
-      "WebFetch(domain:foundryvtt.com)"
+      "WebFetch(domain:foundryvtt.com)",
+      "WebFetch(domain:api.anthropic.com)",
+      "WebFetch(domain:claude.ai)",
+      "Read(//c/Users/yenki/.claude/**)",
+      "Bash(npm run *)",
+      "Bash(mkdir -p \"C:/Users/yenki/AppData/Local/FoundryVTT/Data/modules/luck-ability\")",
+      "Bash(cp -r C:/Proyectos/dnd5e-luck-ability/module.json C:/Proyectos/dnd5e-luck-ability/scripts C:/Proyectos/dnd5e-luck-ability/styles \"C:/Users/yenki/AppData/Local/FoundryVTT/Data/modules/luck-ability/\")"
     ]
   }
 }

@@ -7,3 +7,178 @@
   border-bottom: none;
   padding-bottom: 0;
 }
+
+/* Quick-spend Luck UI: hover-swap on the score and the popover with the
+   four-leaf clover + scrub slider. Wrapped in @layer modules so we reliably
+   override dnd5e2's core styles under v13's CSS cascade layers. */
+@layer modules {
+  /* ── Hover swap on the LCK score ───────────────────────────────────── */
+  .dnd5e2 [data-ability='lck'] .luck-spend-trigger {
+    position: relative;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .luck-spend-trigger .luck-spend-value,
+  .luck-spend-trigger .luck-spend-hover {
+    transition: opacity 0.14s ease, transform 0.14s ease;
+  }
+  .luck-spend-trigger .luck-spend-hover {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: translateY(2px);
+    font-size: 0.55em;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--dnd5e-color-gold, #b58c40);
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .luck-spend-trigger:hover:not([data-open='1']) .luck-spend-value {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+  .luck-spend-trigger:hover:not([data-open='1']) .luck-spend-hover {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Spend Luck popover (lives on document.body, outside the sheet) ──── */
+.luck-spend-popover {
+  position: fixed;
+  /* `left` / `top` are set inline; translate(-50%, 0) centers horizontally on
+     the trigger and keeps `top` as the actual top edge. */
+  transform: translate(-50%, 0);
+  z-index: 1000;
+  width: 240px;
+  padding: 14px 14px 12px;
+  background:
+    linear-gradient(180deg, var(--dnd5e-color-card, #f0e6d2) 0%, #e6d8b8 100%);
+  border: 1px solid var(--dnd5e-color-gold, #b58c40);
+  border-radius: 6px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(0, 0, 0, 0.15);
+  color: var(--color-text-dark-primary, #191813);
+  font-family: var(--dnd5e-font-roboto, 'Signika', sans-serif);
+  animation: luck-pop-in 0.16s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+.luck-spend-popover::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 10px;
+  height: 10px;
+  background: var(--dnd5e-color-card, #f0e6d2);
+  border-top: 1px solid var(--dnd5e-color-gold, #b58c40);
+  border-left: 1px solid var(--dnd5e-color-gold, #b58c40);
+}
+@keyframes luck-pop-in {
+  from { opacity: 0; transform: translate(-50%, -4px); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
+}
+
+.luck-spend-popover .luck-spend-title {
+  font-family: var(--dnd5e-font-modesto, 'Modesto Condensed', serif);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--dnd5e-color-maroon, #6b2c2c);
+  text-align: center;
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgba(107, 44, 44, 0.25);
+  padding-bottom: 6px;
+}
+
+.luck-spend-popover .luck-spend-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.luck-spend-popover .luck-clover {
+  position: relative;
+  width: 68px;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 0 6px rgba(212, 168, 87, 0.15));
+  transition: filter 0.18s ease, transform 0.18s ease;
+}
+.luck-spend-popover .luck-clover[data-armed='1'] {
+  filter: drop-shadow(0 0 14px rgba(212, 168, 87, 0.55));
+  transform: scale(1.04);
+}
+.luck-spend-popover .luck-clover[data-armed='0'] svg { opacity: 0.78; }
+.luck-spend-popover .luck-clover svg { position: absolute; inset: 0; }
+.luck-spend-popover .luck-clover-num {
+  position: relative;
+  z-index: 2;
+  font-family: var(--dnd5e-font-modesto, 'Modesto Condensed', serif);
+  font-size: 20px;
+  font-weight: 700;
+  color: #2a1f08;
+  text-shadow: 0 1px 0 rgba(255, 240, 200, 0.45);
+  pointer-events: none;
+  transform: translateY(-1px);
+}
+
+.luck-spend-popover .luck-spend-track {
+  position: relative;
+  width: 100%;
+  height: 22px;
+  margin-top: 10px;
+  background: linear-gradient(180deg, #d8c79a 0%, #c9b481 100%);
+  border-radius: 999px;
+  border: 1px solid var(--dnd5e-color-gold, #b58c40);
+  box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.3);
+  cursor: ew-resize;
+  overflow: hidden;
+  touch-action: none;
+}
+.luck-spend-popover .luck-spend-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0%;
+  background: linear-gradient(90deg, rgba(107, 44, 44, 0.0) 0%, rgba(107, 44, 44, 0.55) 100%);
+  pointer-events: none;
+}
+.luck-spend-popover .luck-spend-thumb {
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  transform: translate(-50%, -50%);
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #f0c878 0%, #d4a857 60%, #8b6a30 100%);
+  border: 1px solid rgba(255, 240, 200, 0.6);
+  box-shadow: 0 0 6px rgba(212, 168, 87, 0.5);
+  pointer-events: none;
+}
+
+.luck-spend-popover .luck-spend-foot {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--color-text-dark-secondary, #4b4a44);
+  font-family: var(--dnd5e-font-roboto, 'Signika', sans-serif);
+}
+.luck-spend-popover .luck-spend-preview {
+  color: var(--dnd5e-color-maroon, #6b2c2c);
+  font-weight: 600;
+}
